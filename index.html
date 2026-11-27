@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NexusAI — Generate text, images, and code with AI. Fast, free, and simple.">
+    <title>NexusAI — AI Content Generator</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50:  '#f5f3ff',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#2e1065',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes toast-in {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to   { opacity: 1; transform: translate(-50%, 0); }
+        }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- ============ NAVBAR ============ -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-slate-950/70 border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3">
+                <div class="bg-brand-600/20 p-2 rounded-xl border border-brand-500/30">
+                    <i class="fa-solid fa-brain text-brand-500 text-xl"></i>
+                </div>
+                <span class="font-bold text-xl tracking-wider bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                    NexusAI
+                </span>
+            </a>
+
+        </div>
+    </header>
+
+    <!-- ============ TOOL CARDS ============ -->
+    <main class="flex-1">
+        <section id="tools" class="max-w-6xl mx-auto px-6 pt-20 pb-16 w-full">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Pick your generator</h2>
+                <p class="text-slate-400 mt-3">Three tools. One click each.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Text Card -->
+                <button onclick="openModal('text')"
+                        class="text-left bg-slate-900/80 border border-slate-800 hover:border-brand-500/50 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/20 mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-pen-nib text-blue-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">AI Text Generator</h3>
+                        <p class="text-slate-400 text-sm">Blog posts, emails, captions, and marketing copy.</p>
+                    </div>
+                    <div class="mt-6 w-full bg-slate-800 group-hover:bg-blue-600 group-hover:text-white font-medium py-3 rounded-xl transition-all border border-slate-700 group-hover:border-transparent text-center">
+                        Start Writing
+                    </div>
+                </button>
+
+                <!-- Image Card -->
+                <button onclick="openModal('image')"
+                        class="text-left bg-slate-900/80 border border-slate-800 hover:border-brand-500/50 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center border border-pink-500/20 mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-image text-pink-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">AI Image Creator</h3>
+                        <p class="text-slate-400 text-sm">Turn prompts into art, logos, and photorealistic images.</p>
+                    </div>
+                    <div class="mt-6 w-full bg-slate-800 group-hover:bg-pink-600 group-hover:text-white font-medium py-3 rounded-xl transition-all border border-slate-700 group-hover:border-transparent text-center">
+                        Create Image
+                    </div>
+                </button>
+
+                <!-- Code Card -->
+                <button onclick="openModal('code')"
+                        class="text-left bg-slate-900/80 border border-slate-800 hover:border-brand-500/50 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center border border-emerald-500/20 mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-code text-emerald-400 text-xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold mb-2">AI Code Assistant</h3>
+                        <p class="text-slate-400 text-sm">Write, debug, and explain code in any language.</p>
+                    </div>
+                    <div class="mt-6 w-full bg-slate-800 group-hover:bg-emerald-600 group-hover:text-white font-medium py-3 rounded-xl transition-all border border-slate-700 group-hover:border-transparent text-center">
+                        Generate Code
+                    </div>
+                </button>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="border-t border-slate-800 mt-auto">
+        <div class="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+            <p>&copy; 2026 NexusAI · Portfolio demo</p>
+            <p>Powered by Gemini + Pollinations</p>
+        </div>
+    </footer>
+
+    <!-- ============ MODAL ============ -->
+    <div id="generator-modal"
+         class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="modal-title">
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-6 border-b border-slate-800">
+                <div class="flex items-center space-x-3">
+                    <div id="modal-icon" class="w-10 h-10 rounded-xl flex items-center justify-center border"></div>
+                    <h2 id="modal-title" class="text-lg font-bold">Generator</h2>
+                </div>
+                <button onclick="closeModal()"
+                        aria-label="Close"
+                        class="text-slate-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-slate-800">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="p-6 space-y-4">
+                <label for="prompt-input" class="block text-sm font-medium text-slate-300">
+                    Your prompt
+                </label>
+                <textarea id="prompt-input"
+                          rows="5"
+                          placeholder="Describe what you want to generate..."
+                          class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/50 resize-none transition-colors"></textarea>
+
+                <div id="modal-hint" class="text-xs text-slate-500"></div>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button id="generate-btn"
+                            onclick="generate()"
+                            class="flex-1 bg-brand-600 hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-3 rounded-xl transition-all flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span id="generate-btn-text">Generate</span>
+                    </button>
+                    <button onclick="closeModal()"
+                            class="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-700 border border-slate-700 font-medium px-6 py-3 rounded-xl transition-all">
+                        Cancel
+                    </button>
+                </div>
+
+                <!-- Output area -->
+                <div id="output-area" class="hidden mt-4 bg-slate-950 border border-slate-800 rounded-xl p-4 text-sm text-slate-300">
+                    <div class="text-xs text-slate-500 mb-2 uppercase tracking-wider">Output</div>
+                    <div id="output-content" class="whitespace-pre-wrap break-words"></div>
+                </div>
+
+                <!-- Publish section -->
+                <div id="publish-section" class="hidden mt-4 pt-4 border-t border-slate-800">
+                    <div class="text-xs text-slate-500 mb-3 uppercase tracking-wider">Publish</div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="btn-post-x" onclick="publishToX()"
+                                class="flex-1 sm:flex-none bg-black hover:bg-slate-800 border border-slate-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-x-twitter"></i>
+                            Post to X
+                        </button>
+                        <button id="btn-post-facebook" onclick="publishToFacebook()"
+                                class="flex-1 sm:flex-none bg-[#1877F2] hover:bg-[#0d5bce] border border-transparent text-white text-sm font-medium px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-facebook"></i>
+                            Facebook
+                        </button>
+                        <button id="btn-post-instagram" onclick="publishToInstagram()"
+                                class="flex-1 sm:flex-none bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:opacity-90 border border-transparent text-white text-sm font-medium px-4 py-2 rounded-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-instagram"></i>
+                            Instagram
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">
+                        X opens pre-filled. Facebook &amp; Instagram open the platform — text is copied to your clipboard.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ JAVASCRIPT ============ -->
+    <script>
+        const API_URL = 'https://nexusai-backend.onrender.com/api/generate';
+
+        const modal           = document.getElementById('generator-modal');
+        const modalTitle      = document.getElementById('modal-title');
+        const modalIcon       = document.getElementById('modal-icon');
+        const modalHint       = document.getElementById('modal-hint');
+        const promptInput     = document.getElementById('prompt-input');
+        const outputArea      = document.getElementById('output-area');
+        const outputContent   = document.getElementById('output-content');
+        const generateBtn     = document.getElementById('generate-btn');
+        const generateBtnText = document.getElementById('generate-btn-text');
+        const publishSection  = document.getElementById('publish-section');
+
+        const CONFIG = {
+            text: {
+                title:       'AI Text Generator',
+                icon:        'fa-pen-nib',
+                color:       'blue',
+                placeholder: 'e.g., Write a launch tweet for my AI app…',
+                hint:        'Tip: specify tone, audience, and length for best results.',
+            },
+            image: {
+                title:       'AI Image Creator',
+                icon:        'fa-image',
+                color:       'pink',
+                placeholder: 'e.g., A cyberpunk city at night with neon lights…',
+                hint:        'Tip: include style, mood, and composition details.',
+            },
+            code: {
+                title:       'AI Code Assistant',
+                icon:        'fa-code',
+                color:       'emerald',
+                placeholder: 'e.g., React hook for syncing state to localStorage…',
+                hint:        'Tip: specify language, framework, and constraints.',
+            },
+        };
+
+        let currentType = null;
+
+        function openModal(type) {
+            const cfg = CONFIG[type];
+            if (!cfg) return;
+
+            currentType = type;
+            modalTitle.textContent = cfg.title;
+
+            modalIcon.className = 'w-10 h-10 rounded-xl flex items-center justify-center border';
+            const colorMap = {
+                blue:    'bg-blue-500/10 border-blue-500/20 text-blue-400',
+                pink:    'bg-pink-500/10 border-pink-500/20 text-pink-400',
+                emerald: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
+            };
+            modalIcon.className += ' ' + colorMap[cfg.color];
+            modalIcon.innerHTML = `<i class="fa-solid ${cfg.icon}"></i>`;
+
+            promptInput.placeholder = cfg.placeholder;
+            promptInput.value = '';
+            modalHint.textContent = cfg.hint;
+
+            outputArea.classList.add('hidden');
+            outputContent.innerHTML = '';
+            publishSection.classList.add('hidden');
+            generateBtn.disabled = false;
+            generateBtnText.textContent = 'Generate';
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+
+            setTimeout(() => promptInput.focus(), 50);
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+            currentType = null;
+        }
+
+        async function generate() {
+            const value = promptInput.value.trim();
+            if (!value) {
+                promptInput.focus();
+                promptInput.classList.add('border-red-500');
+                setTimeout(() => promptInput.classList.remove('border-red-500'), 1200);
+                return;
+            }
+            if (!currentType) return;
+
+            generateBtn.disabled = true;
+            generateBtnText.textContent = 'Generating…';
+            outputContent.innerHTML = `
+                <div class="flex items-center gap-2 text-slate-400">
+                    <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    <span>Generating${currentType === 'image' ? ' image (may take 10–20s)' : ''}…</span>
+                </div>
+            `;
+            outputArea.classList.remove('hidden');
+            publishSection.classList.add('hidden');
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ type: currentType, prompt: value }),
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    outputContent.innerHTML =
+                        `<span class="text-red-400">❌ Error: ${data.error || 'Unknown error'}</span>`;
+                    return;
+                }
+
+                if (data.is_image) {
+                    outputContent.innerHTML = `
+                        <img src="${data.output}" alt="AI generated" class="rounded-lg w-full mt-2"
+                             onerror="this.parentElement.innerHTML='<span class=\\'text-red-400\\'>❌ Image failed to load. Try again.</span>'">
+                    `;
+                } else {
+                    outputContent.textContent = data.output;
+                    publishSection.classList.remove('hidden');
+                }
+
+            } catch (err) {
+                outputContent.innerHTML =
+                    `<span class="text-red-400">❌ Network error: ${err.message}<br><br>Is the backend running?</span>`;
+            } finally {
+                generateBtn.disabled = false;
+                generateBtnText.textContent = 'Generate';
+            }
+        }
+
+        // ============================================================
+        // X (TWITTER) — Web Intent (opens X with text pre-filled)
+        // ============================================================
+        function publishToX() {
+            const text = outputContent.textContent.trim();
+            if (!text) {
+                alert('Generate some content first!');
+                return;
+            }
+
+            const intentUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            window.open(intentUrl, '_blank', 'noopener,noreferrer,width=550,height=420');
+        }
+
+        // ============================================================
+        // FACEBOOK — Share dialog + clipboard copy
+        // ============================================================
+        async function publishToFacebook() {
+            const text = outputContent.textContent.trim();
+            if (!text) {
+                alert('Generate some content first!');
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch (e) {
+                console.warn('Clipboard copy failed:', e);
+            }
+
+            const fbUrl = 'https://www.facebook.com/sharer/sharer.php?u=' +
+                          encodeURIComponent('https://example.com');
+
+            window.open(fbUrl, '_blank', 'noopener,noreferrer,width=600,height=600');
+            showToast('✅ Text copied — paste it into your Facebook post');
+        }
+
+        // ============================================================
+        // INSTAGRAM — Open Instagram + clipboard copy
+        // ============================================================
+        async function publishToInstagram() {
+            const text = outputContent.textContent.trim();
+            if (!text) {
+                alert('Generate some content first!');
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch (e) {
+                console.warn('Clipboard copy failed:', e);
+            }
+
+            window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer');
+            showToast('✅ Text copied — paste it into your Instagram post');
+        }
+
+        // ============================================================
+        // TOAST — small notification
+        // ============================================================
+        function showToast(message) {
+            const existing = document.getElementById('toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'toast';
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 2rem;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #1e293b;
+                color: #e2e8f0;
+                padding: 0.75rem 1.25rem;
+                border-radius: 0.75rem;
+                border: 1px solid #334155;
+                font-size: 0.875rem;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+                z-index: 9999;
+                animation: toast-in 0.25s ease-out;
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+        });
+    </script>
+
+</body>
+</html>
